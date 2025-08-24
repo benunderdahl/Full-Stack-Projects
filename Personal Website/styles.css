@@ -1,0 +1,9 @@
+.icon {
+    height: 100px;
+    width: 100px;
+    border-radius: 15px;
+}
+
+.linear-gradient {
+    background: linear-gradient(to right, #DDF4E7, #67C090, #26667F, #124170);
+}
