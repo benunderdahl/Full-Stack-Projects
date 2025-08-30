@@ -1,0 +1,17 @@
+{
+  "name": "qrcode",
+  "version": "1.0.0",
+  "description": "qr code projects",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "ben",
+  "license": "ISC",
+  "dependencies": {
+    "@inquirer/prompts": "^7.8.4",
+    "inquirer": "^12.9.4",
+    "qr-image": "^3.2.0"
+  }
+}
