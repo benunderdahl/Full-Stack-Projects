@@ -45,14 +45,39 @@ app.post("/jokes", (req, res) => {
     res.status(201).json(newJoke)
 })
 
+app.put("/jokes/:id", (req, res) => {
+  const id = parseInt(req.params.id) 
+  const jokeIndex = jokes.findIndex(joke => joke.id === id)
+  jokes[jokeIndex].jokeText = req.body.text
+  jokes[jokeIndex].jokeType = req.body.type 
+  res.json(jokes[jokeIndex])
+})
 
-//5. PUT a joke
 
-//6. PATCH a joke
+app.patch("/jokes/:id", (req, res) => {
+  const id = parseInt(req.params.id)
+  const text = req.body.text
+  const type = req.body.type
+  const jokeIndex = jokes.findIndex(joke => joke.id === id)
+  if (text) {
+    jokes[jokeIndex].text = text
+  } else {
+    jokes[jokeIndex].type = type
+  }
+  res.json(jokes[jokeIndex])
+})
 
-//7. DELETE Specific joke
+app.delete("/jokes/:id", (req, res) => {
+  const id = parseInt(req.params.id)
+  const idx = jokes.findIndex(joke => joke.id === id)
+  jokes.splice(idx, 1)
+  res.json(jokes)
+})
 
-//8. DELETE All jokes
+app.delete("/jokes/all", (req, res) => {
+  jokes = null
+  res.json(jokes)
+})
 
 app.listen(port, () => {
   console.log(`Successfully started server on port ${port}.`);
