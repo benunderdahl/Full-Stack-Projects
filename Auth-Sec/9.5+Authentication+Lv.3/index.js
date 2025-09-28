@@ -56,9 +56,17 @@ app.get("/logout", (req, res) => {
   });
 });
 
-app.get("/secrets", (req, res) => {
+app.get("/secrets", async (req, res) => {
   if (req.isAuthenticated()) {
-    res.render("secrets.ejs");
+    const userID = req.user.id
+    console.log(userID)
+    const result = await db.query("SELECT * FROM users where id = $1", [userID])
+    if (result.rows.length === 0 || !result.rows[0].secret) {
+      res.render("submit.ejs")
+    } else {
+      const data = result.rows[0].secret
+      res.render("secrets.ejs", { secret:data });
+    }
   } else {
     res.redirect("/login");
   }
@@ -85,6 +93,23 @@ app.post(
     failureRedirect: "/login",
   })
 );
+
+app.post("/submit", async (req, res) => { 
+  const userID = req.user.id
+  const secret = req.body.secret
+  const result = await db.query("SELECT * FROM users WHERE id = $1", [userID])
+  if (result.rows[0].secret === null) {
+    try {
+      const result = await db.query("UPDATE users SET secret = $1 WHERE id = $2 RETURNING *", [secret, userID])
+      return res.render("secrets.ejs", { secret: result.rows[0].secret })
+    } catch (err) {
+      console.log(err)
+      return res.redirect("/")
+    }
+  }
+  console.log(secret, userID)
+  res.redirect("/")
+})
 
 app.post("/register", async (req, res) => {
   const email = req.body.username;
