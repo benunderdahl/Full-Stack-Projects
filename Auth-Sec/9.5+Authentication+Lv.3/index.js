@@ -111,6 +111,10 @@ app.post("/submit", async (req, res) => {
   res.redirect("/")
 })
 
+app.get("/submit", (req, res) => {
+  res.render("submit.ejs")
+})
+
 app.post("/register", async (req, res) => {
   const email = req.body.username;
   const password = req.body.password;
